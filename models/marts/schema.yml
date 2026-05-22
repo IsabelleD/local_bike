@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: mrt_sales
+    description: >
+      Central sales fact table. One row = one order line item.
+      Contains all denormalized dimensions (store, product, staff, category, brand)
+      and key metrics (revenue, discount, quantity). Primary model for BI dashboards.
+
+
+  - name: mrt_dim_products
+    description: >
+      Product dimension enriched with category, brand, and total stock across all stores.
+
+
+  - name: mrt_dim_stores
+    description: >
+      Store dimension with location details and staff headcount.
+
+
+  - name: mrt_sales_daily_report
+    description: >
+      Daily sales aggregation per store.
+      One row = one calendar day + one store.
+      Designed for time-series revenue dashboards.

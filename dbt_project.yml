@@ -18,15 +18,10 @@ models:
   local_bike:
     staging:
       +materialized: view
-      bike:
-        +schema: bike
     intermediate:
       +materialized: view
-      bike:
-        +schema: bike
     marts:
       +materialized: table
-      +schema: marts
 
   +persist_docs:
     relation: true
