@@ -1,0 +1,57 @@
+version: 2
+
+models:
+  - name: stg_bike__brands
+    description: This models contains informations about the brands sold by the bike store
+
+    columns:
+      - name: brand_id
+        description: This is a unique identifier for the brand
+
+  - name: stg_bike__categories
+    description: This models contains informations about categories
+
+    columns:
+      - name: category_id
+        description: This is a unique identifier for the category
+
+  - name: stg_bike__customers
+    description: This models contains informations about customers
+
+    columns:
+      - name: customer_id
+        description: This is a unique identifier for the customer
+
+  - name: stg_bike__order_items
+    description: This models contains informations about order_item
+
+  - name: stg_bike__orders
+    description: This models contains informations about orders
+
+    columns:
+      - name: order_id
+        description: This is a unique identifier for the order
+
+  - name: stg_bike__products
+    description: This models contains informations about products
+
+    columns:
+      - name: product_id
+        description: This is a unique identifier for the product
+
+  - name: stg_bike__staffs
+    description: This models contains informations about staff
+
+    columns:
+      - name: staff_id
+        description: This is a unique identifier for the staff
+
+  - name: stg_bike__stores
+    description: This models contains informations about product
+
+    columns:
+      - name: store_id
+        description: This is a unique identifier for the store
+
+  - name: stg_bike__stocks
+    description: This models contains informations about stocks by store and product
