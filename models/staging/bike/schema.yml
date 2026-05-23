@@ -2,70 +2,238 @@ version: 2
 
 models:
   - name: stg_bike__brands
-    description: This models contains informations about the brands sold by the bike store
+    description: Brands sold by the bike store
 
     columns:
       - name: brand_id
-        description: This is a unique identifier for the brand
+        description: Unique identifier for the brand
+        tests:
+          - unique
+          - not_null
+      - name: brand_name
+        description: Name of the brand
+        tests:
+          - not_null
 
   - name: stg_bike__categories
-    description: This models contains informations about categories
+    description: Product categories
 
     columns:
       - name: category_id
-        description: This is a unique identifier for the category
+        description: Unique identifier for the category
+        tests:
+          - unique
+          - not_null
+      - name: category_name
+        description: Name of the category
+        tests:
+          - not_null
 
   - name: stg_bike__customers
-    description: This models contains informations about customers
+    description: Customers of the bike store
 
     columns:
       - name: customer_id
-        description: This is a unique identifier for the customer
+        description: Unique identifier for the customer
+        tests:
+          - unique
+          - not_null
+      - name: first_name
+        description: Customer first name
+      - name: last_name
+        description: Customer last name
+      - name: full_name
+        description: Concatenation of first and last name
+        tests:
+          - not_null
+      - name: email
+        description: Customer email address
+      - name: phone
+        description: Customer phone number (nullable)
+      - name: street
+        description: Street address
+      - name: city
+        description: City
+      - name: state
+        description: State (code)
+      - name: zip_code
+        description: Postal zip code
 
   - name: stg_bike__order_items
-    description: This models contains informations about order_item
+    description: Line items within each order — one row per product per order
+
     columns:
+      - name: order_id
+        description: Foreign key to orders
+        tests:
+          - not_null
+      - name: item_id
+        description: Line item number within the order
+        tests:
+          - not_null
+      - name: product_id
+        description: Foreign key to products
+        tests:
+          - not_null
+      - name: quantity
+        description: Number of units ordered
+        tests:
+          - not_null
+      - name: list_price
+        description: Unit price at time of order
+        tests:
+          - not_null
       - name: discount
-        description: This is the percentage of discount
+        description: Discount rate applied (between 0 and 1)
         tests:
           - dbt_utils.accepted_range:
               arguments:
                 min_value: 0
-                max_value: 100
+                max_value: 1
+      - name: revenue
+        description: Net revenue for the line item — list_price * quantity * (1 - discount)
+        tests:
+          - not_null
 
   - name: stg_bike__orders
-    description: This models contains informations about orders
+    description: Customer orders
 
     columns:
       - name: order_id
-        description: This is a unique identifier for the order
+        description: Unique identifier for the order
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: Foreign key to customers
+        tests:
+          - not_null
+      - name: order_status
+        description: Numeric order status (1=Pending, 2=Processing, 3=Rejected, 4=Completed)
       - name: order_status_label
-        description: "Human-readable order status"
+        description: Human-readable order status
         tests:
           - accepted_values:
               arguments:
                 values: ['Pending', 'Processing', 'Rejected', 'Completed']
+      - name: order_date
+        description: Date the order was placed
+        tests:
+          - not_null
+      - name: required_date
+        description: Date the customer requested delivery
+      - name: shipped_date
+        description: Date the order was shipped (nullable if not yet shipped)
+      - name: store_id
+        description: Foreign key to stores
+        tests:
+          - not_null
+      - name: staff_id
+        description: Foreign key to staffs — employee who handled the order
+        tests:
+          - not_null
+      - name: is_unshipped
+        description: True if the order has not yet been shipped
 
   - name: stg_bike__products
-    description: This models contains informations about products
+    description: Products sold by the bike store
 
     columns:
       - name: product_id
-        description: This is a unique identifier for the product
+        description: Unique identifier for the product
+        tests:
+          - unique
+          - not_null
+      - name: product_name
+        description: Full product name
+        tests:
+          - not_null
+      - name: brand_id
+        description: Foreign key to brands
+        tests:
+          - not_null
+      - name: category_id
+        description: Foreign key to categories
+        tests:
+          - not_null
+      - name: model_year
+        description: Model year of the product
+        tests:
+          - not_null
+      - name: list_price
+        description: Catalogue price of the product
+        tests:
+          - not_null
 
   - name: stg_bike__staffs
-    description: This models contains informations about staff
+    description: Store employees
 
     columns:
       - name: staff_id
-        description: This is a unique identifier for the staff
+        description: Unique identifier for the staff member
+        tests:
+          - unique
+          - not_null
+      - name: first_name
+        description: Staff first name
+      - name: last_name
+        description: Staff last name
+      - name: full_name
+        description: Concatenation of first and last name
+        tests:
+          - not_null
+      - name: email
+        description: Staff email address
+      - name: phone
+        description: Staff phone number (nullable)
+      - name: active
+        description: 1 if the employee is currently active, 0 otherwise
+      - name: store_id
+        description: Foreign key to the store the staff is assigned to
+        tests:
+          - not_null
+      - name: manager_id
+        description: Foreign key to the manager's staff_id (nullable for top-level managers)
 
   - name: stg_bike__stores
-    description: This models contains informations about product
+    description: Physical store locations
 
     columns:
       - name: store_id
-        description: This is a unique identifier for the store
+        description: Unique identifier for the store
+        tests:
+          - unique
+          - not_null
+      - name: store_name
+        description: Name of the store
+        tests:
+          - not_null
+      - name: phone
+        description: Store phone number
+      - name: email
+        description: Store email address
+      - name: street
+        description: Street address of the store
+      - name: city
+        description: City where the store is located
+      - name: state
+        description: State where the store is located
+      - name: zip_code
+        description: Postal zip code of the store
 
   - name: stg_bike__stocks
-    description: This models contains informations about stocks by store and product
+    description: Inventory levels by store and product
+
+    columns:
+      - name: store_id
+        description: Foreign key to stores
+        tests:
+          - not_null
+      - name: product_id
+        description: Foreign key to products
+        tests:
+          - not_null
+      - name: quantity
+        description: Number of units in stock at that store
+        tests:
+          - not_null
