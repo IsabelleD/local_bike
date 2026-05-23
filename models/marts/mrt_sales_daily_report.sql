@@ -1,6 +1,5 @@
 select
     o.order_date,
-    s.store_id,
     s.store_name,
     s.city  as store_city,
     s.state as store_state,
@@ -16,7 +15,6 @@ left join {{ ref('int_bike__stores') }}        as s
     on o.store_id  = s.store_id
 group by
     o.order_date,
-    s.store_id,
     s.store_name,
     s.city,
     s.state,
