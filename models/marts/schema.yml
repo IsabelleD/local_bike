@@ -6,20 +6,215 @@ models:
       Central sales fact table. One row = one order line item.
       Contains all denormalized dimensions (store, product, staff, category, brand)
       and key metrics (revenue, discount, quantity). Primary model for BI dashboards.
-
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - order_id
+            - item_id
+    columns:
+      - name: order_id
+        description: Foreign key to orders
+        tests:
+          - not_null
+      - name: item_id
+        description: Line item number within the order
+        tests:
+          - not_null
+      - name: product_id
+        description: Foreign key to products
+        tests:
+          - not_null
+      - name: customer_id
+        description: Foreign key to customers
+        tests:
+          - not_null
+      - name: store_id
+        description: Foreign key to stores
+        tests:
+          - not_null
+      - name: staff_id
+        description: Foreign key to staffs
+        tests:
+          - not_null
+      - name: order_date
+        description: Date the order was placed
+        tests:
+          - not_null
+      - name: required_date
+        description: Date the customer requested delivery
+      - name: shipped_date
+        description: Date the order was shipped (nullable if not yet shipped)
+      - name: order_year
+        description: Year extracted from order_date
+        tests:
+          - not_null
+      - name: order_month
+        description: Month extracted from order_date
+        tests:
+          - not_null
+      - name: order_status
+        description: Numeric order status (1=Pending, 2=Processing, 3=Rejected, 4=Completed)
+      - name: order_status_label
+        description: Human-readable order status
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['Pending', 'Processing', 'Rejected', 'Completed']
+      - name: is_unshipped
+        description: True if the order has not yet been shipped
+      - name: product_name
+        description: Full product name
+        tests:
+          - not_null
+      - name: model_year
+        description: Model year of the product
+      - name: product_list_price
+        description: Catalogue price of the product at time of sale
+        tests:
+          - not_null
+      - name: category_name
+        description: Product category name
+        tests:
+          - not_null
+      - name: brand_name
+        description: Product brand name
+        tests:
+          - not_null
+      - name: store_name
+        description: Name of the store where the order was placed
+        tests:
+          - not_null
+      - name: store_city
+        description: City of the store
+      - name: store_state
+        description: State of the store (2-letter code)
+      - name: staff_name
+        description: Full name of the staff member who handled the order
+      - name: quantity
+        description: Number of units ordered for this line item
+        tests:
+          - not_null
+      - name: list_price
+        description: Unit price applied on this line item
+        tests:
+          - not_null
+      - name: discount
+        description: Discount rate applied on this line item (between 0 and 1)
+      - name: revenue
+        description: Net revenue for the line item — list_price * quantity * (1 - discount)
+        tests:
+          - not_null
 
   - name: mrt_dim_products
     description: >
       Product dimension enriched with category, brand, and total stock across all stores.
-
+      Proxy of int_bike__products.
+    columns:
+      - name: product_id
+        description: Unique identifier for the product
+        tests:
+          - unique
+          - not_null
+      - name: product_name
+        description: Full product name including model year
+        tests:
+          - not_null
+      - name: model_year
+        description: Model year of the product
+        tests:
+          - not_null
+      - name: list_price
+        description: Catalogue price of the product
+        tests:
+          - not_null
+      - name: category_id
+        description: Foreign key to categories
+        tests:
+          - not_null
+      - name: category_name
+        description: Product category name
+        tests:
+          - not_null
+      - name: brand_id
+        description: Foreign key to brands
+        tests:
+          - not_null
+      - name: brand_name
+        description: Product brand name
+        tests:
+          - not_null
+      - name: total_stock
+        description: Total units in stock across all stores (0 if no stock record)
+        tests:
+          - not_null
 
   - name: mrt_dim_stores
     description: >
       Store dimension with location details and staff headcount.
-
+      Proxy of int_bike__stores.
+    columns:
+      - name: store_id
+        description: Unique identifier for the store
+        tests:
+          - unique
+          - not_null
+      - name: store_name
+        description: Name of the store
+        tests:
+          - not_null
+      - name: city
+        description: City where the store is located
+      - name: state
+        description: State where the store is located (2-letter code)
+      - name: email
+        description: Store email address
+      - name: nb_staff
+        description: Total number of staff members assigned to the store
+        tests:
+          - not_null
+      - name: nb_staff_active
+        description: Number of currently active staff members
+        tests:
+          - not_null
 
   - name: mrt_sales_daily_report
     description: >
       Daily sales aggregation per store.
       One row = one calendar day + one store.
       Designed for time-series revenue dashboards.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - order_date
+            - store_name
+    columns:
+      - name: order_date
+        description: Calendar date of the orders
+        tests:
+          - not_null
+      - name: store_name
+        description: Name of the store
+        tests:
+          - not_null
+      - name: store_city
+        description: City of the store
+      - name: store_state
+        description: State of the store (2-letter code)
+      - name: nb_staff_active
+        description: Number of active staff members in the store on that day
+      - name: nb_orders
+        description: Number of distinct orders placed on that day for that store
+        tests:
+          - not_null
+      - name: total_quantity
+        description: Total units sold on that day for that store
+        tests:
+          - not_null
+      - name: total_revenue
+        description: Sum of net revenue on that day for that store
+        tests:
+          - not_null
+      - name: avg_revenue_per_order
+        description: Average net revenue per order on that day for that store
+        tests:
+          - not_null

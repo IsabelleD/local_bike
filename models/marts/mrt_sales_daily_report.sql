@@ -19,5 +19,3 @@ group by
     s.city,
     s.state,
     s.nb_staff_active
-order by o.order_date, 
-         s.store_name
