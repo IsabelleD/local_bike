@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: int_bike__dim_customers
+  - name: int_bike__customers
     description: >
       Customer dimension enriched with lifetime revenue, total quantity purchased,
       and distinct items ordered.
@@ -19,7 +19,7 @@ models:
       - name: nb_diff_items_customer
         description: "Number of distinct items ordered by the customer"
 
-  - name: int_bike__dim_products
+  - name: int_bike__products
     description: >
       Product dimension enriched with category, brand, and total stock across all stores.
     columns:
@@ -35,7 +35,7 @@ models:
       - name: total_stock
         description: "Total units in stock across all stores (0 if no stock record)"
 
-  - name: int_bike__dim_stores
+  - name: int_bike__stores
     description: >
       Store dimension enriched with total and active staff headcount.
     columns:
@@ -50,10 +50,10 @@ models:
       - name: nb_staff_active
         description: "Number of currently active staff members"
 
-  - name: int_bike__dim_orders
+  - name: int_bike__orders
     description: >
       Order-level aggregation: total revenue, total quantity, and distinct items per order.
-      Joins from order_items; used upstream by mart models.
+      Joins from order_items.
     columns:
       - name: order_id
         description: "Unique identifier for the order"
