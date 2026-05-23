@@ -9,43 +9,59 @@ sources:
         description: "Customers orders"
         columns:
           - name: order_id
-            tests: [unique, not_null]
+            tests:
+              - unique
+              - not_null
       - name: order_items
         description: "Orders"
         columns:
           - name: order_id
-            tests: [not_null]
+            tests: 
+              - not_null
           - name: item_id
-            tests: [not_null]
+            tests: 
+              - not_null
       - name: customers
         description: "Customers"
         columns:
           - name: customer_id
-            tests: [unique, not_null]
+            tests:
+              - unique
+              - not_null
       - name: products
         description: "Product"
         columns:
           - name: product_id
-            tests: [unique, not_null]
+            tests:
+              - unique
+              - not_null
       - name: stores
         description: "List of stores (Santa Cruz, Baldwin, Rowlett)"
         columns:
           - name: store_id
-            tests: [unique, not_null]
+            tests:
+              - unique
+              - not_null
       - name: staffs
         description: "Employees"
         columns:
           - name: staff_id
-            tests: [unique, not_null]
+            tests:
+              - unique
+              - not_null
       - name: stocks
         description: "Stocks by store and product"
       - name: brands
         description: "Brands"
         columns:
           - name: brand_id
-            tests: [unique, not_null]
+            tests:
+              - unique
+              - not_null
       - name: categories
         description: "Product categories"
         columns:
           - name: category_id
-            tests: [unique, not_null]
+            tests:
+              - unique
+              - not_null

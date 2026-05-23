@@ -5,5 +5,5 @@ select
     quantity,
     list_price,
     discount,
-    round(list_price * quantity * (1 - discount), 2) as revenue
+    {{ calculate_revenue('list_price', 'quantity', 'discount') }} as revenue
 from {{ source('bike', 'order_items') }}
