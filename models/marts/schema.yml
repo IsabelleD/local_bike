@@ -8,9 +8,10 @@ models:
       and key metrics (revenue, discount, quantity). Primary model for BI dashboards.
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - order_id
-            - item_id
+          arguments:
+            combination_of_columns:
+              - order_id
+              - item_id
     columns:
       - name: order_id
         description: Foreign key to orders
@@ -184,9 +185,10 @@ models:
       Designed for time-series revenue dashboards.
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - order_date
-            - store_name
+          arguments:
+            combination_of_columns:
+              - order_date
+              - store_name
     columns:
       - name: order_date
         description: Calendar date of the orders
