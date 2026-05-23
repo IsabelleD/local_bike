@@ -5,7 +5,7 @@ models:
     description: >
       Central sales fact table. One row = one order line item.
       Contains all denormalized dimensions (store, product, staff, category, brand)
-      and key metrics (revenue, discount, quantity). Primary model for BI dashboards.
+      and key metrics (revenue, discount, quantity).
     tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
@@ -18,7 +18,7 @@ models:
         tests:
           - not_null
       - name: item_id
-        description: Line item number within the order
+        description: Item number for the order
         tests:
           - not_null
       - name: product_id
@@ -54,9 +54,9 @@ models:
         tests:
           - not_null
       - name: order_status
-        description: Numeric order status (1=Pending, 2=Processing, 3=Rejected, 4=Completed)
+        description: Order status code (1=Pending, 2=Processing, 3=Rejected, 4=Completed)
       - name: order_status_label
-        description: Human-readable order status
+        description: Order status label
         tests:
           - accepted_values:
               arguments:
@@ -64,13 +64,13 @@ models:
       - name: is_unshipped
         description: True if the order has not yet been shipped
       - name: product_name
-        description: Full product name
+        description: Product name
         tests:
           - not_null
       - name: model_year
         description: Model year of the product
       - name: product_list_price
-        description: Catalogue price of the product at time of sale
+        description: Real price of the product at time of sale
         tests:
           - not_null
       - name: category_name
@@ -82,13 +82,13 @@ models:
         tests:
           - not_null
       - name: store_name
-        description: Name of the store where the order was placed
+        description: Name of the store
         tests:
           - not_null
       - name: store_city
         description: City of the store
       - name: store_state
-        description: State of the store (2-letter code)
+        description: State of the store (code)
       - name: staff_name
         description: Full name of the staff member who handled the order
       - name: quantity
@@ -96,7 +96,7 @@ models:
         tests:
           - not_null
       - name: list_price
-        description: Unit price applied on this line item
+        description: Real unit price applied on this line item
         tests:
           - not_null
       - name: discount
@@ -109,7 +109,6 @@ models:
   - name: mrt_dim_products
     description: >
       Product dimension enriched with category, brand, and total stock across all stores.
-      Proxy of int_bike__products.
     columns:
       - name: product_id
         description: Unique identifier for the product
@@ -117,7 +116,7 @@ models:
           - unique
           - not_null
       - name: product_name
-        description: Full product name including model year
+        description: Full product name
         tests:
           - not_null
       - name: model_year
@@ -125,7 +124,7 @@ models:
         tests:
           - not_null
       - name: list_price
-        description: Catalogue price of the product
+        description: Real price of the product
         tests:
           - not_null
       - name: category_id
@@ -145,14 +144,13 @@ models:
         tests:
           - not_null
       - name: total_stock
-        description: Total units in stock across all stores (0 if no stock record)
+        description: Total units in stock in all stores (0 if no stock record)
         tests:
           - not_null
 
   - name: mrt_dim_stores
     description: >
       Store dimension with location details and staff headcount.
-      Proxy of int_bike__stores.
     columns:
       - name: store_id
         description: Unique identifier for the store
@@ -166,7 +164,7 @@ models:
       - name: city
         description: City where the store is located
       - name: state
-        description: State where the store is located (2-letter code)
+        description: State where the store is located (code)
       - name: email
         description: Store email address
       - name: nb_staff
@@ -201,9 +199,9 @@ models:
       - name: store_city
         description: City of the store
       - name: store_state
-        description: State of the store (2-letter code)
+        description: State of the store (code)
       - name: nb_staff_active
-        description: Number of active staff members in the store on that day
+        description: Number of active staff members in the store
       - name: nb_orders
         description: Number of distinct orders placed on that day for that store
         tests:
