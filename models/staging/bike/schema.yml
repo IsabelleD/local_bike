@@ -24,6 +24,14 @@ models:
 
   - name: stg_bike__order_items
     description: This models contains informations about order_item
+    columns:
+      - name: discount
+        description: This is the percentage of discount
+        tests:
+        - dbt_utils.accepted_range:
+          arguments:
+            min_value: 0
+            max_value: 100
 
   - name: stg_bike__orders
     description: This models contains informations about orders
@@ -31,6 +39,12 @@ models:
     columns:
       - name: order_id
         description: This is a unique identifier for the order
+      - name: order_status_label
+        description: "Human-readable order status"
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['Pending', 'Processing', 'Rejected', 'Completed']
 
   - name: stg_bike__products
     description: This models contains informations about products
