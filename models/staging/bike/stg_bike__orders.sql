@@ -14,7 +14,7 @@ select
         when order_status = 4 then 'Completed'
     end as order_status_label,
     case
-        when shipped_date is null or shipped_date = '' then true
+        when safe_cast(shipped_date as date) is null then true
         else false
     end as is_unshipped
 from {{ source('bike', 'orders') }}
