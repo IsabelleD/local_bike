@@ -155,6 +155,7 @@ models:
             combination_of_columns:
               - order_date
               - store_name
+              - is_unshipped
     columns:
       - name: order_date
         description: Calendar date of the orders
