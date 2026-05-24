@@ -22,7 +22,6 @@ select
     -- Product
     p.product_name,
     p.model_year,
-    p.list_price as product_list_price,
 
     -- Category & brand
     p.category_name,

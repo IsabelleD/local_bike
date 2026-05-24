@@ -69,10 +69,6 @@ models:
           - not_null
       - name: model_year
         description: Model year of the product
-      - name: product_list_price
-        description: Real price of the product at time of sale
-        tests:
-          - not_null
       - name: category_name
         description: Product category name
         tests:
@@ -145,34 +141,6 @@ models:
           - not_null
       - name: total_stock
         description: Total units in stock in all stores (0 if no stock record)
-        tests:
-          - not_null
-
-  - name: mrt_dim_stores
-    description: >
-      Store dimension with location details and staff headcount.
-    columns:
-      - name: store_id
-        description: Unique identifier for the store
-        tests:
-          - unique
-          - not_null
-      - name: store_name
-        description: Name of the store
-        tests:
-          - not_null
-      - name: city
-        description: City where the store is located
-      - name: state
-        description: State where the store is located (code)
-      - name: email
-        description: Store email address
-      - name: nb_staff
-        description: Total number of staff members assigned to the store
-        tests:
-          - not_null
-      - name: nb_staff_active
-        description: Number of currently active staff members
         tests:
           - not_null
 
