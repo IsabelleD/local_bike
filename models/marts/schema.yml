@@ -69,10 +69,6 @@ models:
           - not_null
       - name: model_year
         description: Model year of the product
-      - name: product_list_price
-        description: Real price of the product at time of sale
-        tests:
-          - not_null
       - name: category_name
         description: Product category name
         tests:
