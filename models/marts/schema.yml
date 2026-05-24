@@ -146,7 +146,7 @@ models:
 
   - name: mrt_sales_daily_report
     description: >
-      Daily sales aggregation per store.
+      Daily sales aggregation per store and is_unshipped (because problem od data quality from april 2018).
       One row = one calendar day + one store.
       Designed for time-series revenue dashboards.
     tests:
@@ -170,6 +170,8 @@ models:
         description: State of the store (code)
       - name: nb_staff_active
         description: Number of active staff members in the store
+      - name: is_unshipped
+        description: True if the order has not yet been shipped
       - name: nb_orders
         description: Number of distinct orders placed on that day for that store
         tests:
@@ -180,9 +182,5 @@ models:
           - not_null
       - name: total_revenue
         description: Sum of net revenue on that day for that store
-        tests:
-          - not_null
-      - name: avg_revenue_per_order
-        description: Average net revenue per order on that day for that store
         tests:
           - not_null

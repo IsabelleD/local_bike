@@ -15,7 +15,6 @@ select
     extract(month from o.order_date) as order_month,
 
     -- Status
-    o.order_status,
     o.order_status_label,
     o.is_unshipped,
 
