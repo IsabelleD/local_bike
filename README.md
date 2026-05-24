@@ -1,4 +1,4 @@
-# Local Bike — dbt Cloud Project
+# Local Bike
 
 Analytics engineering project for **Local Bike**, a US bicycle retailer with stores in Santa Cruz (CA), Baldwin (NY), and Rowlett (TX).
 
