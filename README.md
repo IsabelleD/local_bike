@@ -38,5 +38,5 @@ mrt_detailled_sales : 1 line by item order with all detailled information
 
 - Uniqueness and not-null tests on all primary keys
 - `accepted_values` on `order_status_label`
-- `relationships` test: `fct_sales.store_id` → `dim_stores.store_id`
-- Custom test: `test_positive_price` — ensures no zero or negative prices in order items
+- Custom test: `revenue_is_positive` — ensures no zero or negative revenue for order
+               `list_proce_is_positive` — ensures no zero or negative prices in order items
