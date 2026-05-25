@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: mrt_detailled_sales
+  - name: mrt_detailed_sales
     description: >
       Central sales fact table. One row = one order line item.
       Contains all denormalized dimensions (store, product, staff, category, brand)
